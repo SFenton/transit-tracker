@@ -22,8 +22,9 @@ external_components:
     refresh: 1h
   - source: github://tjhorner/esphome-custom-components@c57ffd46fcf30badb2838421e8ff6cbeb9c1dd06
     components: [ serial_rpc, lis3dh, project_version ]
-  - source: github://tjhorner/esphome-transit-tracker@main
-    refresh: 0s
+  - source:
+      type: local
+      path: C:/Users/sfent/source/repos/esphome-transit-tracker/components
 
 logger:
   level: DEBUG
@@ -70,6 +71,24 @@ switch:
       - lambda: id(tracker).set_scroll_headsigns(true);
     turn_off_action:
       - lambda: id(tracker).set_scroll_headsigns(false);
+  - platform: template
+    id: uniform_headsign_start_config
+    name: "Uniform Headsign Start"
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_OFF
+    turn_on_action:
+      - lambda: id(tracker).set_uniform_headsign_start(true);
+    turn_off_action:
+      - lambda: id(tracker).set_uniform_headsign_start(false);
+  - platform: template
+    id: uniform_headsign_end_config
+    name: "Uniform Headsign End"
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_OFF
+    turn_on_action:
+      - lambda: id(tracker).set_uniform_headsign_end(true);
+    turn_off_action:
+      - lambda: id(tracker).set_uniform_headsign_end(false);
 
 button:
   - platform: restart
