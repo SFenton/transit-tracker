@@ -140,6 +140,13 @@ text:
         lambda: |
           id(tracker).set_route_styles_from_text(id(route_styles_config)->state);
   - <<: *config_text_common
+    id: hidden_routes_config
+    name: "Hidden Routes"
+    on_value:
+      then:
+        lambda: |
+          id(tracker).set_hidden_routes_from_text(id(hidden_routes_config)->state);
+  - <<: *config_text_common
     id: now_str_config
     initial_value: "min"
     on_value:
@@ -295,6 +302,9 @@ lis3dh:
   update_interval: 1s
 
 text_sensor:
+  - platform: template
+    id: route_names_sensor
+    name: "Route Names"
   - platform: project_version
     id: project_version_text
   - platform: lis3dh
@@ -371,5 +381,6 @@ web_server:
 
 transit_tracker:
   id: tracker
+  route_names_sensor: route_names_sensor
 
 serial_rpc:
