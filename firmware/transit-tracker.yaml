@@ -1,5 +1,7 @@
 substitutions:
   project_version: "dev"
+  display_rows: "3"
+  pinned_rows_max: "2"
 
 esphome:
   name: transit-tracker
@@ -132,6 +134,33 @@ number:
       then:
         lambda: |-
           id(tracker).set_page_scroll_duration(x);
+  - platform: template
+    id: page_pause_duration_config
+    name: "Page Pause Duration"
+    optimistic: true
+    restore_value: true
+    initial_value: 1
+    min_value: 1
+    max_value: 5
+    step: 1
+    unit_of_measurement: "s"
+    on_value:
+      then:
+        lambda: |-
+          id(tracker).set_page_pause_duration((int)x);
+  - platform: template
+    id: pinned_rows_count_config
+    name: "Pinned Rows Count"
+    optimistic: true
+    restore_value: true
+    initial_value: 1
+    min_value: 1
+    max_value: ${pinned_rows_max}
+    step: 1
+    on_value:
+      then:
+        lambda: |-
+          id(tracker).set_pinned_rows_count((int)x);
 
 button:
   - platform: restart
@@ -189,6 +218,13 @@ text:
       then:
         lambda: |
           id(tracker).set_hidden_routes_from_text(id(hidden_routes_config)->state);
+  - <<: *config_text_common
+    id: pinned_routes_config
+    name: "Pinned Routes"
+    on_value:
+      then:
+        lambda: |
+          id(tracker).set_pinned_routes_from_text(id(pinned_routes_config)->state);
   - <<: *config_text_common
     id: now_str_config
     initial_value: "min"
@@ -434,6 +470,8 @@ web_server:
 
 transit_tracker:
   id: tracker
+  limit: ${display_rows}
   hidden_routes_text: hidden_routes_config
+  pinned_routes_text: pinned_routes_config
 
 serial_rpc:
