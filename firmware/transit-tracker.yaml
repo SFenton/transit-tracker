@@ -38,6 +38,10 @@ captive_portal:
 api:
   reboot_timeout: 0s
 
+mqtt:
+  broker: !secret mqtt_broker
+  discovery: false  # We handle our own discovery for route switches
+
 http_request:
   verify_ssl: false
 
@@ -89,6 +93,45 @@ switch:
       - lambda: id(tracker).set_uniform_headsign_end(true);
     turn_off_action:
       - lambda: id(tracker).set_uniform_headsign_end(false);
+  - platform: template
+    id: scroll_routes_config
+    name: "Scroll Routes"
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_OFF
+    turn_on_action:
+      - lambda: id(tracker).set_scroll_routes(true);
+    turn_off_action:
+      - lambda: id(tracker).set_scroll_routes(false);
+
+number:
+  - platform: template
+    id: page_interval_config
+    name: "Page Interval"
+    optimistic: true
+    restore_value: true
+    initial_value: 5
+    min_value: 5
+    max_value: 60
+    step: 1
+    unit_of_measurement: "s"
+    on_value:
+      then:
+        lambda: |-
+          id(tracker).set_page_interval((int)x);
+  - platform: template
+    id: page_scroll_duration_config
+    name: "Page Scroll Duration"
+    optimistic: true
+    restore_value: true
+    initial_value: 0.5
+    min_value: 0.5
+    max_value: 3.0
+    step: 0.1
+    unit_of_measurement: "s"
+    on_value:
+      then:
+        lambda: |-
+          id(tracker).set_page_scroll_duration(x);
 
 button:
   - platform: restart
@@ -176,6 +219,19 @@ text:
           id(tracker).get_localization()->set_hours_short_string(id(hours_short_str_config)->state);
 
 select:
+  - platform: template
+    id: paging_style_config
+    name: "Paging Style"
+    optimistic: true
+    restore_value: true
+    options:
+      - "full"
+      - "rotate"
+    initial_option: "full"
+    on_value:
+      then:
+        lambda: |-
+          id(tracker).set_paging_style_rotate(id(paging_style_config)->current_option() == "rotate");
   - platform: template
     id: time_display_config
     optimistic: true
@@ -302,9 +358,6 @@ lis3dh:
   update_interval: 1s
 
 text_sensor:
-  - platform: template
-    id: route_names_sensor
-    name: "Route Names"
   - platform: project_version
     id: project_version_text
   - platform: lis3dh
@@ -381,6 +434,6 @@ web_server:
 
 transit_tracker:
   id: tracker
-  route_names_sensor: route_names_sensor
+  hidden_routes_text: hidden_routes_config
 
 serial_rpc:
