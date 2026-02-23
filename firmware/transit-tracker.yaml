@@ -96,6 +96,15 @@ switch:
     turn_off_action:
       - lambda: id(tracker).set_uniform_headsign_end(false);
   - platform: template
+    id: show_pin_icon_config
+    name: "Show Pin Icon"
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    turn_on_action:
+      - lambda: id(tracker).set_show_pin_icon(true);
+    turn_off_action:
+      - lambda: id(tracker).set_show_pin_icon(false);
+  - platform: template
     id: scroll_routes_config
     name: "Scroll Routes"
     optimistic: true
@@ -253,6 +262,19 @@ text:
       then:
         lambda: |-
           id(tracker).get_localization()->set_hours_short_string(id(hours_short_str_config)->state);
+  - <<: *config_text_common
+    id: divider_color_config
+    initial_value: "255,0,0"
+    on_value:
+      then:
+        lambda: |-
+          id(tracker).set_divider_color_from_text(id(divider_color_config)->state);
+  - <<: *config_text_common
+    id: route_color_overrides_config
+    on_value:
+      then:
+        lambda: |-
+          id(tracker).set_route_color_overrides_from_text(id(route_color_overrides_config)->state);
 
 select:
   - platform: template
@@ -473,5 +495,7 @@ transit_tracker:
   limit: ${display_rows}
   hidden_routes_text: hidden_routes_config
   pinned_routes_text: pinned_routes_config
+  divider_color_text: divider_color_config
+  route_color_overrides_text: route_color_overrides_config
 
 serial_rpc:
