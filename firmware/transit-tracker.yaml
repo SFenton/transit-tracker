@@ -30,6 +30,20 @@ external_components:
 
 logger:
   level: DEBUG
+  logs:
+    mqtt: WARN
+    mqtt.component: WARN
+    mqtt.client: WARN
+    api: WARN
+    api.connection: WARN
+    wifi: WARN
+    sensor: WARN
+    text_sensor: WARN
+    switch: WARN
+    number: WARN
+    select: WARN
+    text: WARN
+    component: WARN
 
 wifi:
   ap:
