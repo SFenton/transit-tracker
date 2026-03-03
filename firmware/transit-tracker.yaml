@@ -127,6 +127,15 @@ switch:
       - lambda: id(tracker).set_scroll_routes(true);
     turn_off_action:
       - lambda: id(tracker).set_scroll_routes(false);
+  - platform: template
+    id: prefer_replace_over_scroll_config
+    name: "Prefer Replace Over Scroll"
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    turn_on_action:
+      - lambda: id(tracker).set_prefer_replace_over_scroll(true);
+    turn_off_action:
+      - lambda: id(tracker).set_prefer_replace_over_scroll(false);
 
 number:
   - platform: template
@@ -237,6 +246,7 @@ text:
   - <<: *config_text_common
     id: hidden_routes_config
     name: "Hidden Routes"
+    internal: true
     on_value:
       then:
         lambda: |
@@ -244,10 +254,19 @@ text:
   - <<: *config_text_common
     id: pinned_routes_config
     name: "Pinned Routes"
+    internal: true
     on_value:
       then:
         lambda: |
           id(tracker).set_pinned_routes_from_text(id(pinned_routes_config)->state);
+  - <<: *config_text_common
+    id: next_only_routes_config
+    name: "Next Only Routes"
+    internal: true
+    on_value:
+      then:
+        lambda: |
+          id(tracker).set_next_only_routes_from_text(id(next_only_routes_config)->state);
   - <<: *config_text_common
     id: now_str_config
     initial_value: "min"
@@ -277,13 +296,6 @@ text:
         lambda: |-
           id(tracker).get_localization()->set_hours_short_string(id(hours_short_str_config)->state);
   - <<: *config_text_common
-    id: divider_color_config
-    initial_value: "255,0,0"
-    on_value:
-      then:
-        lambda: |-
-          id(tracker).set_divider_color_from_text(id(divider_color_config)->state);
-  - <<: *config_text_common
     id: route_color_overrides_config
     on_value:
       then:
@@ -291,19 +303,6 @@ text:
           id(tracker).set_route_color_overrides_from_text(id(route_color_overrides_config)->state);
 
 select:
-  - platform: template
-    id: paging_style_config
-    name: "Paging Style"
-    optimistic: true
-    restore_value: true
-    options:
-      - "full"
-      - "rotate"
-    initial_option: "full"
-    on_value:
-      then:
-        lambda: |-
-          id(tracker).set_paging_style_rotate(id(paging_style_config)->current_option() == "rotate");
   - platform: template
     id: time_display_config
     optimistic: true
@@ -347,6 +346,20 @@ select:
       then:
         lambda: |-
           id(tracker).set_list_mode(id(list_mode_config)->current_option());
+  - platform: template
+    id: scroll_speed_config
+    name: "Scroll Speed"
+    optimistic: true
+    restore_value: true
+    options:
+      - "slow"
+      - "medium"
+      - "fast"
+    initial_option: "medium"
+    on_value:
+      then:
+        lambda: |-
+          id(tracker).set_scroll_speed(id(scroll_speed_config)->current_option());
 
 output:
   - platform: template
@@ -509,7 +522,7 @@ transit_tracker:
   limit: ${display_rows}
   hidden_routes_text: hidden_routes_config
   pinned_routes_text: pinned_routes_config
-  divider_color_text: divider_color_config
+  next_only_routes_text: next_only_routes_config
   route_color_overrides_text: route_color_overrides_config
 
 serial_rpc:
