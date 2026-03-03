@@ -76,10 +76,10 @@ switch:
     id: flip_display_config
     optimistic: true
     restore_mode: RESTORE_DEFAULT_OFF
-    turn_on_action:
+    on_turn_on:
       - lambda: |-
           id(matrix).set_rotation(esphome::display::DisplayRotation::DISPLAY_ROTATION_180_DEGREES);
-    turn_off_action:
+    on_turn_off:
       - lambda: |-
           id(matrix).set_rotation(esphome::display::DisplayRotation::DISPLAY_ROTATION_0_DEGREES);
   - platform: template
@@ -87,54 +87,63 @@ switch:
     name: "Scroll Headsigns"
     optimistic: true
     restore_mode: RESTORE_DEFAULT_OFF
-    turn_on_action:
+    on_turn_on:
       - lambda: id(tracker).set_scroll_headsigns(true);
-    turn_off_action:
+    on_turn_off:
       - lambda: id(tracker).set_scroll_headsigns(false);
   - platform: template
     id: uniform_headsign_start_config
     name: "Uniform Headsign Start"
     optimistic: true
     restore_mode: RESTORE_DEFAULT_OFF
-    turn_on_action:
+    on_turn_on:
       - lambda: id(tracker).set_uniform_headsign_start(true);
-    turn_off_action:
+    on_turn_off:
       - lambda: id(tracker).set_uniform_headsign_start(false);
   - platform: template
     id: uniform_headsign_end_config
     name: "Uniform Headsign End"
     optimistic: true
     restore_mode: RESTORE_DEFAULT_OFF
-    turn_on_action:
+    on_turn_on:
       - lambda: id(tracker).set_uniform_headsign_end(true);
-    turn_off_action:
+    on_turn_off:
       - lambda: id(tracker).set_uniform_headsign_end(false);
   - platform: template
     id: show_pin_icon_config
     name: "Show Pin Icon"
     optimistic: true
     restore_mode: RESTORE_DEFAULT_ON
-    turn_on_action:
+    on_turn_on:
       - lambda: id(tracker).set_show_pin_icon(true);
-    turn_off_action:
+    on_turn_off:
       - lambda: id(tracker).set_show_pin_icon(false);
+  - platform: template
+    id: respect_pin_inset_config
+    name: "Respect Pin Inset"
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    on_turn_on:
+      - lambda: id(tracker).set_respect_pin_inset(true);
+    on_turn_off:
+      - lambda: id(tracker).set_respect_pin_inset(false);
   - platform: template
     id: scroll_routes_config
     name: "Scroll Routes"
     optimistic: true
     restore_mode: RESTORE_DEFAULT_OFF
-    turn_on_action:
+    on_turn_on:
       - lambda: id(tracker).set_scroll_routes(true);
-    turn_off_action:
+    on_turn_off:
       - lambda: id(tracker).set_scroll_routes(false);
   - platform: template
     id: prefer_replace_over_scroll_config
     name: "Prefer Replace Over Scroll"
     optimistic: true
     restore_mode: RESTORE_DEFAULT_ON
-    turn_on_action:
+    on_turn_on:
       - lambda: id(tracker).set_prefer_replace_over_scroll(true);
-    turn_off_action:
+    on_turn_off:
       - lambda: id(tracker).set_prefer_replace_over_scroll(false);
 
 number:
