@@ -202,6 +202,20 @@ number:
       then:
         lambda: |-
           id(tracker).set_pinned_rows_count((int)x);
+  - platform: template
+    id: leaving_soon_threshold_config
+    name: "Leaving Soon Threshold"
+    optimistic: true
+    restore_value: true
+    initial_value: 10
+    min_value: 5
+    max_value: 60
+    step: 1
+    unit_of_measurement: "min"
+    on_value:
+      then:
+        lambda: |-
+          id(tracker).set_leaving_soon_threshold((int)x);
 
 button:
   - platform: restart
