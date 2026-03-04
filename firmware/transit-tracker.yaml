@@ -145,6 +145,15 @@ switch:
       - lambda: id(tracker).set_prefer_replace_over_scroll(true);
     on_turn_off:
       - lambda: id(tracker).set_prefer_replace_over_scroll(false);
+  - platform: template
+    id: always_scroll_or_replace_config
+    name: "Always Scroll or Replace"
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_OFF
+    on_turn_on:
+      - lambda: id(tracker).set_always_scroll_or_replace(true);
+    on_turn_off:
+      - lambda: id(tracker).set_always_scroll_or_replace(false);
 
 number:
   - platform: template
