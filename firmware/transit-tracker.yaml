@@ -364,6 +364,7 @@ select:
       - "slow"
       - "medium"
       - "fast"
+      - "fastest"
     initial_option: "medium"
     on_value:
       then:
