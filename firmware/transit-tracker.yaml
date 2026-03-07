@@ -194,6 +194,19 @@ number:
         lambda: |-
           id(tracker).set_pinned_rows_count((int)x);
   - platform: template
+    id: general_pins_count_config
+    name: "General Pins Count"
+    optimistic: true
+    restore_value: true
+    initial_value: 1
+    min_value: 1
+    max_value: ${display_rows}
+    step: 1
+    on_value:
+      then:
+        lambda: |-
+          id(tracker).set_general_pins_count((int)x);
+  - platform: template
     id: leaving_soon_threshold_config
     name: "Leaving Soon Threshold"
     optimistic: true
