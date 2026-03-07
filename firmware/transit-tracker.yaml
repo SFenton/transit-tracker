@@ -29,21 +29,21 @@ external_components:
       path: C:/Users/sfent/source/repos/esphome-transit-tracker/components
 
 logger:
-  level: DEBUG
-  logs:
-    mqtt: WARN
-    mqtt.component: WARN
-    mqtt.client: WARN
-    api: WARN
-    api.connection: WARN
-    wifi: WARN
-    sensor: WARN
-    text_sensor: WARN
-    switch: WARN
-    number: WARN
-    select: WARN
-    text: WARN
-    component: WARN
+  level: NONE
+  # logs:
+  #   mqtt: WARN
+  #   mqtt.component: WARN
+  #   mqtt.client: WARN
+  #   api: WARN
+  #   api.connection: WARN
+  #   wifi: WARN
+  #   sensor: WARN
+  #   text_sensor: WARN
+  #   switch: WARN
+  #   number: WARN
+  #   select: WARN
+  #   text: WARN
+  #   component: WARN
 
 wifi:
   ap:
@@ -109,15 +109,6 @@ switch:
       - lambda: id(tracker).set_uniform_headsign_end(true);
     on_turn_off:
       - lambda: id(tracker).set_uniform_headsign_end(false);
-  - platform: template
-    id: show_pin_icon_config
-    name: "Show Pin Icon"
-    optimistic: true
-    restore_mode: RESTORE_DEFAULT_ON
-    on_turn_on:
-      - lambda: id(tracker).set_show_pin_icon(true);
-    on_turn_off:
-      - lambda: id(tracker).set_show_pin_icon(false);
   - platform: template
     id: respect_pin_inset_config
     name: "Respect Pin Inset"
